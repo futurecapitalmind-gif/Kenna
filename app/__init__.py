@@ -1,52 +1,20 @@
-# Kenna - AI Trading Telegram Bot Mentor
+from __future__ import annotations
 
-Kenna is a Telegram bot that provides live market insight for forex and gold using technical analysis and mentor-style commentary. It is designed to help traders monitor instruments, check momentum, and understand bias without having to stare at charts all day.
+from dataclasses import dataclass
+import os
 
-## Features
+from dotenv import load_dotenv
 
-- Live forex and gold market analysis
-- RSI, MACD, moving-average, support and resistance checks
-- Trade signal generation with confidence scoring
-- Mentor-style suggestions and risk awareness
-- Telegram commands for quick market checks
-- YAML/JSON-ready configuration via environment variables
+load_dotenv()
 
-## Supported pairs
 
-- EURUSD
-- USDJPY
-- GBPUSD
-- AUDUSD
-- XAUUSD / GOLD
+@dataclass(frozen=True)
+class Settings:
+    telegram_bot_token: str = os.getenv("TELEGRAM_BOT_TOKEN", "")
+    telegram_admin_id: int = int(os.getenv("TELEGRAM_ADMIN_ID", "0") or 0)
+    default_timeframe: str = os.getenv("DEFAULT_TIMEFRAME", "1h")
+    market_data_provider: str = os.getenv("MARKET_DATA_PROVIDER", "yahoo")
+    min_signal_confidence: float = float(os.getenv("MIN_SIGNAL_CONFIDENCE", "0.65"))
 
-## Quick start
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-python main.py
-```
-
-## Environment variables
-
-```env
-TELEGRAM_BOT_TOKEN=your_token_here
-TELEGRAM_ADMIN_ID=your_telegram_id
-MARKET_DATA_PROVIDER=yahoo
-DEFAULT_TIMEFRAME=1h
-MIN_SIGNAL_CONFIDENCE=0.65
-```
-
-## Commands
-
-```text
-/start
-/help
-/analyze EURUSD
-/analyze XAUUSD
-/gold
-/signals
-/price EURUSD
-```
+settings = Settings()
